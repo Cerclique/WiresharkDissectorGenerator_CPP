@@ -10,9 +10,9 @@ GREEN=\033[0;32m
 NC=\033[0m
 
 # Macro for better display
-PRINT_NAME=@printf "%30s\t" $<
+PRINT_NAME=@printf "%50s\t" $<
 PRINT_STATUS=@if [ $$? -eq 0 ]; then echo -e '$(GREEN)$(BOLD_B)[SUCCESS]$(BOLD_E)$(NC)'; else echo -e '$(RED)$(BOLD_B)[FAIL]$(BOLD_E)$(NC)'; fi
-PRINT_PROCESS_NAME=@printf "\n%30s\t" $@
+PRINT_PROCESS_NAME=@printf "\n%50s\t" $@
 
 # Name of source, include and object folder (relative to Makefile path)
 SOURCES_DIR=src
