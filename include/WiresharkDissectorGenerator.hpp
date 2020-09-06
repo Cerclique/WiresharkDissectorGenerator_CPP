@@ -20,16 +20,16 @@ using JSON = nlohmann::json;
 
 class WiresharkDissectorGenerator {
 private:
-  JSON readJSON(const std::string& filePath);
-  std::string readCodeTemplate();
-  void findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr);
-  std::string getCurrentDateAndTime();
+  [[nodiscard]] const JSON readJSON(const std::string& filePath) const;
+  [[nodiscard]] std::string readCodeTemplate() const;
+  void findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr) const noexcept;
+  [[nodiscard]] const std::string getCurrentDateAndTime() const noexcept;
 
 public:
   WiresharkDissectorGenerator() = default;
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&) = delete;
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&&) = delete;
 
-  bool validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath);
-  void generateDissector(const std::string& _dissectorPath, const std::string& _outputPath);
+  [[nodiscard]] bool validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) const;
+  void generateDissector(const std::string& _dissectorPath, const std::string& _outputPath) const;
 };

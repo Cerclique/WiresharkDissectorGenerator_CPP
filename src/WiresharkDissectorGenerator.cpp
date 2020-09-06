@@ -1,7 +1,6 @@
 #include "WiresharkDissectorGenerator.hpp"
-#include <iostream>
 
-JSON WiresharkDissectorGenerator::readJSON(const std::string& filePath) {
+const JSON WiresharkDissectorGenerator::readJSON(const std::string& filePath) const {
   std::ifstream fileStream(filePath);
 
   if (not fileStream.is_open()) {
@@ -15,7 +14,7 @@ JSON WiresharkDissectorGenerator::readJSON(const std::string& filePath) {
   return fileJSON;
 }
 
-std::string WiresharkDissectorGenerator::readCodeTemplate() {
+std::string WiresharkDissectorGenerator::readCodeTemplate() const {
   std::ifstream fileStream(DEFAULT_CODE_TEMPLATE_PATH);
 
   if (not fileStream.is_open()) {
@@ -34,7 +33,7 @@ std::string WiresharkDissectorGenerator::readCodeTemplate() {
   return buffer;
 }
 
-void WiresharkDissectorGenerator::findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr) {
+void WiresharkDissectorGenerator::findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr) const noexcept {
   auto index = buffer.find(toSearch);
 
   while (index != std::string::npos) {
@@ -43,7 +42,7 @@ void WiresharkDissectorGenerator::findAndReplaceAll(std::string& buffer, const s
   }
 }
 
-std::string WiresharkDissectorGenerator::getCurrentDateAndTime() {
+const std::string WiresharkDissectorGenerator::getCurrentDateAndTime() const noexcept {
   std::locale::global(std::locale(""));
   std::time_t t = std::time(nullptr);
   char mbstr[100];
@@ -52,8 +51,7 @@ std::string WiresharkDissectorGenerator::getCurrentDateAndTime() {
   return std::string(mbstr);
 }
 
-bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) {
-
+bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) const {
   auto schemaJSON = this->readJSON(_schemaPath);
   auto dissectorJSON = this->readJSON(_dissectorPath);
 
@@ -87,7 +85,7 @@ bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPa
   return isDissectorValid;
 }
 
-void WiresharkDissectorGenerator::generateDissector(const std::string& _dissectorPath, const std::string& _outputPath) {
+void WiresharkDissectorGenerator::generateDissector(const std::string& _dissectorPath, const std::string& _outputPath) const {
   auto dissectorJSON = this->readJSON(_dissectorPath);
   auto outputBuffer = this->readCodeTemplate();
 
