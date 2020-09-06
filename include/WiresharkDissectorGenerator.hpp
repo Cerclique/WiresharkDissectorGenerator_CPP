@@ -1,5 +1,6 @@
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "nlohmann/json.hpp"
 using JSON = nlohmann::json;
@@ -15,10 +16,14 @@ using JSON = nlohmann::json;
 #define DEFAULT_OUTPUT_PATH "data/dissector.lua"
 #define DEFAULT_CODE_TEMPLATE_PATH "data/code_template"
 
+#define PROJECT_NAME "WiresharkDissectorGenerator"
+
 class WiresharkDissectorGenerator {
 private:
   JSON readJSON(const std::string& filePath);
   std::string readCodeTemplate();
+  void findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr);
+  std::string getCurrentDateAndTime();
 
 public:
   WiresharkDissectorGenerator() = default;
@@ -26,4 +31,5 @@ public:
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&&) = delete;
 
   bool validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath);
+  void generateDissector(const std::string& _dissectorPath, const std::string& _outputPath);
 };
