@@ -33,7 +33,7 @@ OBJECTS=$(patsubst $(SOURCES_DIR)/%.cpp,$(OBJECTS_DIR)/%.o,$(SOURCES))
 CXX=clang++
 
 # Compilation flags
-CXXFLAGS=-c -Wall -Wextra -std=c++17
+CXXFLAGS=-c -g -Wall -Wextra -std=c++17
 
 # Module External
 INCLUDE_MODULE_EXTERNAL= -Iexternal_include
