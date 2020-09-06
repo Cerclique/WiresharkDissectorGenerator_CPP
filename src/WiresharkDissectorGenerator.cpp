@@ -48,3 +48,27 @@ std::string WiresharkDissectorGenerator::readCodeTemplate() {
 
   return buffer;
 }
+
+void WiresharkDissectorGenerator::setSchemaPath(const std::string &_schemaPath) {
+  this->schemaPath = _schemaPath;
+}
+
+void WiresharkDissectorGenerator::setDissectorPath(const std::string &_dissectorPath) {
+  this->dissectorPath = _dissectorPath;
+}
+
+void WiresharkDissectorGenerator::setOutputPath(const std::string &_outputPath) {
+  this->schemaPath = _outputPath;
+}
+
+std::string WiresharkDissectorGenerator::getSchemaPath() const {
+  return this->schemaPath;
+}
+
+std::string WiresharkDissectorGenerator::getDissectorPath() const {
+  return this->dissectorPath;
+}
+
+std::string WiresharkDissectorGenerator::getOutputPath() const {
+  return this->outputPath;
+}

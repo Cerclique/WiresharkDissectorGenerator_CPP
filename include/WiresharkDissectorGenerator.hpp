@@ -24,4 +24,12 @@ public:
   WiresharkDissectorGenerator(const std::string& _dissectorPath, const std::string& _ouputPath);
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&) = delete;
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&&) = delete;
+
+  void setSchemaPath(const std::string& _schemaPath);
+  void setDissectorPath(const std::string& _dissectorPath);
+  void setOutputPath(const std::string& _outputPath);
+
+  std::string getSchemaPath() const;
+  std::string getDissectorPath() const;
+  std::string getOutputPath() const;
 };
