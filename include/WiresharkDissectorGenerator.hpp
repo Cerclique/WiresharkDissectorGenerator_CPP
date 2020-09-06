@@ -4,6 +4,12 @@
 #include "nlohmann/json.hpp"
 using JSON = nlohmann::json;
 
+#include "valijson/adapters/nlohmann_json_adapter.hpp"
+#include "valijson/utils/nlohmann_json_utils.hpp"
+#include "valijson/schema.hpp"
+#include "valijson/schema_parser.hpp"
+#include "valijson/validator.hpp"
+
 #define DEFAULT_SCHEMA_PATH "data/schema.json"
 #define DEFAULT_DISSECTOR_PATH "data/example_dissector.json"
 #define DEFAULT_OUTPUT_PATH "data/dissector.lua"
@@ -11,25 +17,13 @@ using JSON = nlohmann::json;
 
 class WiresharkDissectorGenerator {
 private:
-  std::string schemaPath;
-  std::string dissectorPath;
-  std::string outputPath;
-
   JSON readJSON(const std::string& filePath);
   std::string readCodeTemplate();
 
 public:
-  WiresharkDissectorGenerator();
-  WiresharkDissectorGenerator(const std::string& _schemaPath,const std::string& _dissectorPath,const  std::string& _outputPath);
-  WiresharkDissectorGenerator(const std::string& _dissectorPath, const std::string& _ouputPath);
+  WiresharkDissectorGenerator() = default;
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&) = delete;
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&&) = delete;
 
-  void setSchemaPath(const std::string& _schemaPath);
-  void setDissectorPath(const std::string& _dissectorPath);
-  void setOutputPath(const std::string& _outputPath);
-
-  std::string getSchemaPath() const;
-  std::string getDissectorPath() const;
-  std::string getOutputPath() const;
+  bool validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath);
 };

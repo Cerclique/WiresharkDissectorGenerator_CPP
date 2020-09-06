@@ -1,21 +1,6 @@
 #include "WiresharkDissectorGenerator.hpp"
 #include <iostream>
 
-WiresharkDissectorGenerator::WiresharkDissectorGenerator() :
-  schemaPath(DEFAULT_SCHEMA_PATH), dissectorPath(DEFAULT_DISSECTOR_PATH), outputPath(DEFAULT_OUTPUT_PATH) {
-
-}
-
-WiresharkDissectorGenerator::WiresharkDissectorGenerator(const std::string& _schemaPath, const std::string& _dissectorPath, const std::string& _outputPath) :
-  schemaPath(_schemaPath), dissectorPath(_dissectorPath), outputPath(_outputPath) {
-
-}
-
-WiresharkDissectorGenerator::WiresharkDissectorGenerator(const std::string& _dissectorPath, const std::string& _outputPath) :
-  schemaPath(DEFAULT_SCHEMA_PATH), dissectorPath(_dissectorPath), outputPath(_outputPath) {
-
-}
-
 JSON WiresharkDissectorGenerator::readJSON(const std::string& filePath) {
   std::ifstream fileStream(filePath);
 
@@ -49,26 +34,37 @@ std::string WiresharkDissectorGenerator::readCodeTemplate() {
   return buffer;
 }
 
-void WiresharkDissectorGenerator::setSchemaPath(const std::string &_schemaPath) {
-  this->schemaPath = _schemaPath;
-}
+bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) {
 
-void WiresharkDissectorGenerator::setDissectorPath(const std::string &_dissectorPath) {
-  this->dissectorPath = _dissectorPath;
-}
+  auto schemaJSON = this->readJSON(_schemaPath);
+  auto dissectorJSON = this->readJSON(_dissectorPath);
 
-void WiresharkDissectorGenerator::setOutputPath(const std::string &_outputPath) {
-  this->schemaPath = _outputPath;
-}
+  valijson::adapters::NlohmannJsonAdapter schemaAdapter(schemaJSON);
+  valijson::adapters::NlohmannJsonAdapter dissectorAdapter(dissectorJSON);
 
-std::string WiresharkDissectorGenerator::getSchemaPath() const {
-  return this->schemaPath;
-}
+  valijson::Schema schema;
+  valijson::SchemaParser schemaParser;
+  schemaParser.populateSchema(schemaAdapter, schema);
 
-std::string WiresharkDissectorGenerator::getDissectorPath() const {
-  return this->dissectorPath;
-}
+  valijson::ValidationResults validationResults;
+  valijson::Validator validator;
 
-std::string WiresharkDissectorGenerator::getOutputPath() const {
-  return this->outputPath;
+  auto isDissectorValid = validator.validate(schema, dissectorAdapter, &validationResults);
+
+  if (not isDissectorValid) {
+    valijson::ValidationResults::Error error;
+    uint32_t errorNum = 1;
+    while (validationResults.popError(error)) {
+      std::cerr << "Error #" << errorNum << std::endl;
+      std::cerr << "\t";
+      for (const std::string &contextElement : error.context) {
+        std::cerr << contextElement << " ";
+      }
+      std::cerr << std::endl;
+      std::cerr << "    - " << error.description << std::endl;
+      ++errorNum;
+    }
+  }
+
+  return isDissectorValid;
 }
