@@ -1,5 +1,8 @@
+#ifndef _H_WIRESHARK_DISSECTOR_GENERATOR
+#define _H_WIRESHARK_DISSECTOR_GENERATOR
+
 #include <fstream>
-#include <string>
+#include <string_view>
 #include <ctime>
 
 #include "nlohmann/json.hpp"
@@ -20,9 +23,9 @@ using JSON = nlohmann::json;
 
 class WiresharkDissectorGenerator {
 private:
-  [[nodiscard]] const JSON readJSON(const std::string& filePath) const;
+  [[nodiscard]] const JSON readJSON(const std::string_view& filePath) const;
   [[nodiscard]] std::string readCodeTemplate() const;
-  void findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr) const noexcept;
+  void findAndReplaceAll(std::string& buffer, const std::string_view& toSearch, const std::string_view& replaceStr) const noexcept;
   [[nodiscard]] const std::string getCurrentDateAndTime() const noexcept;
 
 public:
@@ -30,6 +33,10 @@ public:
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&) = delete;
   WiresharkDissectorGenerator(const WiresharkDissectorGenerator&&) = delete;
 
-  [[nodiscard]] bool validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) const;
-  void generateDissector(const std::string& _dissectorPath, const std::string& _outputPath) const;
+  WiresharkDissectorGenerator& operator=(const WiresharkDissectorGenerator& rhs) = delete;
+
+  [[nodiscard]] bool validateDissector(const std::string_view& _schemaPath, const std::string_view& _dissectorPath) const;
+  void generateDissector(const std::string_view& _dissectorPath, const std::string_view& _outputPath) const;
 };
+
+#endif

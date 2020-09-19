@@ -4,11 +4,11 @@ int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
 
-    WiresharkDissectorGenerator generator;
+    WiresharkDissectorGenerator WDGen;
 
     try {
-      if (generator.validateDissector(DEFAULT_SCHEMA_PATH, DEFAULT_DISSECTOR_PATH)) {
-        generator.generateDissector(DEFAULT_DISSECTOR_PATH, DEFAULT_OUTPUT_PATH);
+      if (WDGen.validateDissector(DEFAULT_SCHEMA_PATH, DEFAULT_DISSECTOR_PATH) == true) {
+        WDGen.generateDissector(DEFAULT_DISSECTOR_PATH, DEFAULT_OUTPUT_PATH);
       }
       else {
         std::cout << "Validation failed" << std::endl;
@@ -18,5 +18,5 @@ int main(int argc, char** argv) {
       std::cerr << e.what() << std::endl;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -1,10 +1,10 @@
 #include "WiresharkDissectorGenerator.hpp"
 
-const JSON WiresharkDissectorGenerator::readJSON(const std::string& filePath) const {
-  std::ifstream fileStream(filePath);
+const JSON WiresharkDissectorGenerator::readJSON(const std::string_view& filePath) const {
+  std::ifstream fileStream(filePath.data());
 
   if (not fileStream.is_open()) {
-    throw std::runtime_error("File not found: " + filePath);
+    throw std::runtime_error("Cannot open file : " + std::string(filePath));
   }
 
   JSON fileJSON;
@@ -33,7 +33,7 @@ std::string WiresharkDissectorGenerator::readCodeTemplate() const {
   return buffer;
 }
 
-void WiresharkDissectorGenerator::findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr) const noexcept {
+void WiresharkDissectorGenerator::findAndReplaceAll(std::string&  buffer, const std::string_view& toSearch, const std::string_view& replaceStr) const noexcept {
   auto index = buffer.find(toSearch);
 
   while (index != std::string::npos) {
@@ -51,7 +51,7 @@ const std::string WiresharkDissectorGenerator::getCurrentDateAndTime() const noe
   return std::string(mbstr);
 }
 
-bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) const {
+bool WiresharkDissectorGenerator::validateDissector(const std::string_view& _schemaPath, const std::string_view& _dissectorPath) const {
   auto schemaJSON = this->readJSON(_schemaPath);
   auto dissectorJSON = this->readJSON(_dissectorPath);
 
@@ -73,7 +73,7 @@ bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPa
     while (validationResults.popError(error)) {
       std::cerr << "Error #" << errorNum << std::endl;
       std::cerr << "\t";
-      for (const std::string &contextElement : error.context) {
+      for (const auto& contextElement : error.context) {
         std::cerr << contextElement << " ";
       }
       std::cerr << std::endl;
@@ -85,7 +85,7 @@ bool WiresharkDissectorGenerator::validateDissector(const std::string& _schemaPa
   return isDissectorValid;
 }
 
-void WiresharkDissectorGenerator::generateDissector(const std::string& _dissectorPath, const std::string& _outputPath) const {
+void WiresharkDissectorGenerator::generateDissector(const std::string_view& _dissectorPath, const std::string_view& _outputPath) const {
   auto dissectorJSON = this->readJSON(_dissectorPath);
   auto outputBuffer = this->readCodeTemplate();
 
@@ -157,9 +157,9 @@ void WiresharkDissectorGenerator::generateDissector(const std::string& _dissecto
   this->findAndReplaceAll(outputBuffer, "%PORTS%", portBuffer);
 
   /** Write to output file **/
-  std::ofstream fileStream(_outputPath, std::ofstream::trunc);
+  std::ofstream fileStream(_outputPath.data(), std::ofstream::trunc);
   if (not fileStream.is_open()) {
-    throw std::runtime_error("Could not open " + _outputPath);
+    throw std::runtime_error("Cannot open file : " + std::string(_outputPath));
   }
 
   fileStream << outputBuffer;
