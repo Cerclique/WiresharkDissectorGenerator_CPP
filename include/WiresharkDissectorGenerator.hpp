@@ -18,18 +18,20 @@ using JSON = nlohmann::json;
 
 #define PROJECT_NAME "WiresharkDissectorGenerator"
 
-class WiresharkDissectorGenerator {
-private:
-  [[nodiscard]] const JSON readJSON(const std::string& filePath) const;
-  [[nodiscard]] std::string readCodeTemplate() const;
-  void findAndReplaceAll(std::string& buffer, const std::string& toSearch, const std::string& replaceStr) const noexcept;
-  [[nodiscard]] const std::string getCurrentDateAndTime() const noexcept;
+namespace WDG {  
+  class WiresharkDissectorGenerator {
+  private:
+    [[nodiscard]] const JSON readJSON(const std::string &filePath) const;
+    [[nodiscard]] std::string readCodeTemplate() const;
+    void findAndReplaceAll(std::string &buffer, const std::string &toSearch, const std::string &replaceStr) const noexcept;
+    [[nodiscard]] const std::string getCurrentDateAndTime() const noexcept;
 
-public:
-  WiresharkDissectorGenerator() = default;
-  WiresharkDissectorGenerator(const WiresharkDissectorGenerator&) = delete;
-  WiresharkDissectorGenerator(const WiresharkDissectorGenerator&&) = delete;
+  public:
+    WiresharkDissectorGenerator() = default;
+    WiresharkDissectorGenerator(const WiresharkDissectorGenerator &) = delete;
+    WiresharkDissectorGenerator(const WiresharkDissectorGenerator &&) = delete;
 
-  [[nodiscard]] bool validateDissector(const std::string& _schemaPath, const std::string& _dissectorPath) const;
-  void generateDissector(const std::string& _dissectorPath, const std::string& _outputPath) const;
-};
+    [[nodiscard]] bool validateDissector(const std::string &_schemaPath, const std::string &_dissectorPath) const;
+    void generateDissector(const std::string &_dissectorPath, const std::string &_outputPath) const;
+  };
+}
