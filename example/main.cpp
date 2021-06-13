@@ -4,7 +4,7 @@ int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
 
-    WiresharkDissectorGenerator generator;
+    WDG::WiresharkDissectorGenerator generator;
 
     try {
       if (generator.validateDissector(DEFAULT_SCHEMA_PATH, DEFAULT_DISSECTOR_PATH)) {
