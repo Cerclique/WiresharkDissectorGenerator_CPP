@@ -10,10 +10,10 @@ This project is a C++ porting of my orignal JS Dissector Generator for Wireshark
 ## Dependencies
 
 In order to compile :
-- Clang 5 or later (Support for C++17)
-- [Alternative] GCC 5 or later.
+- GCC 5 or later (Support for C++17)
+- [Alternative] Clang 5 or later.
 
-Following your compiler, you might need to modify the `Makefile` (CXX variable). By default the project use `clang` to compile.
+Following your compiler, you might need to modify the `Makefile` (CXX variable). By default the project use `g++` to compile.
 
 This project depends on two "header-only" projects (included in `external_include` folder) :
 - [nlohmann/json](https://github.com/nlohmann/json) (v3.9.1) : JSON for modern C++
@@ -22,7 +22,9 @@ This project depends on two "header-only" projects (included in `external_includ
 ## Installation && Usage
 
 - Clone the repository
-- Compile the project using the `Makefile`
-- Run the sample `WiresharkDissectorGenerator`
+- Compile the library using the `Makefile`
+- Include `WiresharkDissectorGenerator.hpp` and link the library to your projet.
+
+Refer to `main.cpp` in `example` directory on how to use it.
 
 The generated LUA plugin can be found in `data` folder.
